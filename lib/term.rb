@@ -11,13 +11,11 @@ class Term
   end
 
   def Term.search(search_word)
-
     @@all_terms.each do |term|
       if term.word == search_word
         return term
       end
     end
-
   end
 
   def initialize(word, definition)
@@ -36,6 +34,5 @@ class Term
   def definition
     @definition
   end
-
 
 end

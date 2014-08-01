@@ -6,12 +6,15 @@ require './lib/term.rb'
 def main_menu
   loop do
     puts "[== Dictionary ==]\n"
+    puts "[s] Search your dictionary"
     puts "[c] Create a term and definition"
     puts "[l] List the words in your dictionary"
     puts "[d] Get definitions of words"
     puts "[x] Exit"
     menu_choice = gets.chomp
-    if menu_choice == "c"
+    if menu_choice == "s"
+      term_search
+    elsif menu_choice == "c"
       create_word
     elsif menu_choice == "l"
       list_words_with_index
@@ -24,6 +27,13 @@ def main_menu
       puts "Invalid Choice."
     end
   end
+end
+
+def term_search
+  puts "Please input the word you would like to search for:"
+  word_input = gets.chomp
+  @current_term = Term.search(word_input)
+  puts "\n#{@current_term.word}: #{@current_term.definition}\n\n"
 end
 
 def create_word
