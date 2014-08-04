@@ -99,8 +99,8 @@ def get_definition
   puts "\nWhich word do you want to see?"
   word_choice = gets.chomp.to_i
   @current_term = Term.all[word_choice - 1]
-  @current_term.definition.each_with_index do |definition, index|
-    puts "[#{index + 1}] #{definition}"
+  @current_term.all_definitions.each_with_index do |definition, index|
+    puts "[#{index + 1}] #{definition.definition} in #{definition.language}"
   end
 end
 
@@ -111,7 +111,9 @@ def add_definition
   @current_term = Term.all[word_choice -1]
   puts "What is the new definition you would like to add?"
   new_definition = gets.chomp
-  @current_term.definition_add(new_definition)
+  puts "In what language is that definition?"
+  new_definition_lang = gets.chomp
+  @current_term.definition_add(new_definition, new_definition_lang)
 end
 
 def remove_definition
@@ -119,13 +121,13 @@ def remove_definition
   puts "Which word would you like to remove a definition from?"
   word_choice = gets.chomp.to_i
   @current_term = Term.all[word_choice -1]
-  @current_term.definition.each_with_index do |definition, index|
-    puts "[#{index + 1}] #{definition}"
+  @current_term.all_definitions.each_with_index do |definition, index|
+    puts "[#{index + 1}] #{definition.definition} in #{definition.language}"
   end
   puts "Which definition would you like to remove?"
   definition_choice = gets.chomp.to_i - 1
   deleted_definition = @current_term.definition_delete(definition_choice)
-  puts "You deleted #{deleted_definition} from #{@current_term.word}"
+  puts "You deleted #{deleted_definition.definition} from #{@current_term.word(0)}"
 end
 
 def update_definition
@@ -133,14 +135,16 @@ def update_definition
   puts "Which word would you like to update a definition of?"
   word_choice = gets.chomp.to_i
   @current_term = Term.all[word_choice -1]
-  @current_term.definition.each_with_index do |definition, index|
-    puts "[#{index + 1}] #{definition}"
+  @current_term.all_definitions.each_with_index do |definition, index|
+    puts "[#{index + 1}] #{definition.definition} in #{definition.language}"
   end
   puts "Which definition would you like to update?"
   definition_choice = gets.chomp.to_i - 1
   puts "What is the new definition?"
   new_definition = gets.chomp
-  @current_term.definition_edit(definition_choice, new_definition)
+  puts "In what language is this definition?"
+  new_definition_lang = gets.chomp
+  @current_term.definition_edit(definition_choice, new_definition, new_definition_lang)
 end
 
 main_menu

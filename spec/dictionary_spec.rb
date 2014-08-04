@@ -42,36 +42,39 @@ describe "Term" do
   it 'allows the word and definition to be displayed' do
     test_term = Term.new("carrot", "English", "orange root vegetable")
     expect(test_term.word(0)).to eq 'carrot'
-    expect(test_term.definition[0]).to eq 'orange root vegetable'
+    expect(test_term.definition(0)).to eq 'orange root vegetable'
   end
 
   it 'allows the addition of multiple definitions' do
     test_term = Term.new("house", "English", "a place to live")
-    test_term.definition_add("a casino (as in 'The house wins')")
-    expect(test_term.definition[0]).to eq "a place to live"
-    expect(test_term.definition[1]).to eq "a casino (as in 'The house wins')"
+    test_term.definition_add("a casino (as in 'The house wins')","English")
+    expect(test_term.definition(0)).to eq "a place to live"
+    expect(test_term.definition_language(0)).to eq "English"
+    expect(test_term.definition(1)).to eq "a casino (as in 'The house wins')"
+    expect(test_term.definition_language(1)).to eq "English"
   end
 
   it 'allows the deletion of a definition' do
     test_term = Term.new("house", "English", "a place to live")
     test_definition = test_term.definition_delete(0)
-    expect(test_term.definition).to eq []
-    expect(test_definition).to eq "a place to live"
+    expect(test_term.all_definitions).to eq []
+    expect(test_definition.definition).to eq "a place to live"
+    expect(test_definition.language).to eq "English"
   end
 
   it 'allows the modification of a definition' do
     test_term = Term.new("house", "English", "a place to live")
-    test_definition = test_term.definition_edit(0,"a casino (as in 'The house wins')")
-    expect(test_term.definition[0]).to eq "a casino (as in 'The house wins')"
+    test_definition = test_term.definition_edit(0,"a casino (as in 'The house wins')", "English")
+    expect(test_term.definition(0)).to eq "a casino (as in 'The house wins')"
   end
 
   it "allows for multiple word inputs in different languages for the same term" do
     test_term = Term.new("house", "English", "a place to live")
     test_term.word_add("casa", "Español")
     expect(test_term.word(0)).to eq "house"
-    expect(test_term.language(0)).to eq "English"
+    expect(test_term.word_language(0)).to eq "English"
     expect(test_term.word(1)).to eq "casa"
-    expect(test_term.language(1)).to eq "Español"
+    expect(test_term.word_language(1)).to eq "Español"
   end
 
 end
@@ -81,6 +84,14 @@ describe Word do
     test_word = Word.new("house", "English")
     expect(test_word.word).to eq "house"
     expect(test_word.language).to eq "English"
+  end
+end
+
+describe Definition do
+  it "creates a new definition object from an input definition" do
+    test_definition = Definition.new("a place to live", "English")
+    expect(test_definition.definition).to eq "a place to live"
+    expect(test_definition.language).to eq "English"
   end
 end
 

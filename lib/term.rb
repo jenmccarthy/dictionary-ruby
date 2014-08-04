@@ -28,8 +28,8 @@ class Term
   def initialize(word, language, definition)
     @words = []
     @words << Word.new(word, language)
-    @definition = []
-    @definition << definition
+    @definitions = []
+    @definitions << Definition.new(definition, language)
   end
 
   def save
@@ -48,7 +48,7 @@ class Term
     @words[word_index].word
   end
 
-  def language(word_index)
+  def word_language(word_index)
     @words[word_index].language
   end
 
@@ -56,21 +56,33 @@ class Term
     @words << Word.new(word, language)
   end
 
-  def definition
-    @definition
+  def all_definitions
+    @definitions
   end
 
-  def definition_add(input_definition)
-    @definition << input_definition
+  def definitions(definition_index)
+    @definitions[definition_index]
+  end
+
+  def definition(definition_index)
+    @definitions[definition_index].definition
+  end
+
+  def definition_language(definition_index)
+    @definitions[definition_index].language
+  end
+
+  def definition_add(input_definition, language)
+    @definitions << Definition.new(input_definition, language)
   end
 
   def definition_delete(definition_index)
-    deleted_definition = @definition.delete_at(definition_index)
+    deleted_definition = @definitions.delete_at(definition_index)
     return deleted_definition
   end
 
-  def definition_edit(definition_index, new_definition)
-    @definition[definition_index].replace(new_definition)
+  def definition_edit(definition_index, new_definition, new_language)
+    @definitions[definition_index].definition.replace(new_definition)
   end
 
 end
