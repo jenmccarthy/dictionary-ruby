@@ -1,5 +1,7 @@
 require 'rspec'
 require 'term'
+require "word"
+require "definition"
 
 describe Term do
 
@@ -73,3 +75,12 @@ describe "Term" do
   end
 
 end
+
+describe Word do
+  it "creates a new word object from an input word and an input language" do
+    test_word = Word.new("house", "English")
+    expect(test_word.word).to eq "house"
+    expect(test_word.language).to eq "English"
+  end
+end
+

@@ -1,3 +1,6 @@
+require './lib/word.rb'
+require './lib/definition.rb'
+
 class Term
 
   @@all_terms = []
@@ -12,9 +15,11 @@ class Term
 
   def Term.search(search_word)
     found_term = nil
-    @@all_terms.each_with_index do |term, index|
-      if term.word(index) == search_word
-        return found_term = term
+    @@all_terms.each do |term|
+      term.all_words.each do |term_word|
+        if term_word.word == search_word
+          return found_term = term
+        end
       end
     end
     return found_term
@@ -22,7 +27,7 @@ class Term
 
   def initialize(word, language, definition)
     @words = []
-    @words << [word, language]
+    @words << Word.new(word, language)
     @definition = []
     @definition << definition
   end
@@ -40,15 +45,15 @@ class Term
   end
 
   def word(word_index)
-    @words[word_index][0]
+    @words[word_index].word
   end
 
   def language(word_index)
-    @words[word_index][1]
+    @words[word_index].language
   end
 
   def word_add(word, language)
-    @words << [word, language]
+    @words << Word.new(word, language)
   end
 
   def definition
