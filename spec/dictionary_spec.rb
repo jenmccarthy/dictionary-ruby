@@ -18,7 +18,7 @@ describe "Term" do
 
   describe ".search" do
     it "allows user to search for a term" do
-      test_term = Term.new("nachos", "chips with a yummy cheese sauce")
+      test_term = Term.new("nachos", "English", "chips with a yummy cheese sauce")
       test_term.save
       expect(Term.search("nachos")).to eq test_term
     end
@@ -27,19 +27,49 @@ describe "Term" do
   describe ".save" do
     it "creates instance level save method for objects we instance to
         save them into class level array called @@all_terms" do
-      test_term = Term.new("nachos", "chips with a yummy cheese sauce")
+      test_term = Term.new("nachos", "English", "chips with a yummy cheese sauce")
       expect(test_term.save).to eq [test_term]
     end
   end
 
   it 'initializes the word and definition for our dictionary' do
-    test_term = Term.new("carrot", "orange root vegetable")
+    test_term = Term.new("carrot", "English", "orange root vegetable")
     expect(test_term).to be_an_instance_of Term
   end
 
   it 'allows the word and definition to be displayed' do
-    test_term = Term.new("carrot", "orange root vegetable")
-    expect(test_term.word).to eq 'carrot'
-    expect(test_term.definition).to eq 'orange root vegetable'
+    test_term = Term.new("carrot", "English", "orange root vegetable")
+    expect(test_term.word(0)).to eq 'carrot'
+    expect(test_term.definition[0]).to eq 'orange root vegetable'
   end
+
+  it 'allows the addition of multiple definitions' do
+    test_term = Term.new("house", "English", "a place to live")
+    test_term.definition_add("a casino (as in 'The house wins')")
+    expect(test_term.definition[0]).to eq "a place to live"
+    expect(test_term.definition[1]).to eq "a casino (as in 'The house wins')"
+  end
+
+  it 'allows the deletion of a definition' do
+    test_term = Term.new("house", "English", "a place to live")
+    test_definition = test_term.definition_delete(0)
+    expect(test_term.definition).to eq []
+    expect(test_definition).to eq "a place to live"
+  end
+
+  it 'allows the modification of a definition' do
+    test_term = Term.new("house", "English", "a place to live")
+    test_definition = test_term.definition_edit(0,"a casino (as in 'The house wins')")
+    expect(test_term.definition[0]).to eq "a casino (as in 'The house wins')"
+  end
+
+  it "allows for multiple word inputs in different languages for the same term" do
+    test_term = Term.new("house", "English", "a place to live")
+    test_term.word_add("casa", "Español")
+    expect(test_term.word(0)).to eq "house"
+    expect(test_term.language(0)).to eq "English"
+    expect(test_term.word(1)).to eq "casa"
+    expect(test_term.language(1)).to eq "Español"
+  end
+
 end
